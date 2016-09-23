@@ -11,3 +11,6 @@ GITLAB_NAMESPACES = false
 GITHUB_TOKEN = ''
 # The destination organization on Github.
 GITHUB_ORG = ''
+
+# Folder to checkout the repos to.
+TEMP_FOLDER = '/tmp/repos/'
