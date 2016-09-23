@@ -7,7 +7,7 @@ import requests
 import json
 import settings
 from urlparse import urlparse, parse_qs
-from git import Repo
+
 import sys
 
 def getLastPage(link_header):
@@ -24,7 +24,8 @@ def getLastPage(link_header):
 github_urls = {
   'repos': 'https://api.github.com/orgs/{}/repos', # GET
   'license': 'https://api.github.com/repos/{}/{}', # GET
-  'readme': 'https://api.github.com/repos/{}/{}/readme' # GET
+  'readme': 'https://api.github.com/repos/{}/{}/readme', # GET
+  'branches': 'https://api.github.com/repos/{}/{}/branches' # GET
 }
 
 gitlab_urls = {
@@ -48,6 +49,8 @@ last_page = getLastPage(head.headers['link'])
 
 if last_page != 0:
 
+  print('Name,License,Readme?,Branches Count')
+
   for page in range(1, last_page + 1):
 
     new_payload = gh_payload
@@ -60,11 +63,11 @@ if last_page != 0:
     existing_projects = json.loads(r.text)
 
     for existing_project in existing_projects:
-      # print(github_urls['license'].format(settings.GITHUB_ORG, existing_project['name']))
+      # print('-- ' + existing_project['name'] + ' --')
+
       repo_r = requests.get(github_urls['license'].format(settings.GITHUB_ORG, existing_project['name']), gh_payload, headers=headers)
       repo = json.loads(repo_r.text)
 
-      # print existing_project['name']
       license = ''
       if repo.has_key('license') and repo['license'] is not None and \
         repo['license'].has_key('spdx_id') and repo['license']['spdx_id'] is not None:
@@ -75,9 +78,22 @@ if last_page != 0:
 
       readme = ''
       if readme_data.has_key('name'):
-        readme = readme_data['name']
+        readme = str(readme_data['name'])
 
-      print(','.join([existing_project['name'], license, readme]))
+      branches_headers = { 'Accept': 'application/vnd.github.loki-preview+json'}
+      branches_payload = gh_payload
+      branches_payload['per_page'] = 100
+
+      branches_r = requests.get(github_urls['branches'].format(settings.GITHUB_ORG, existing_project['name']), gh_payload, headers=branches_headers)
+      branches_data = json.loads(branches_r.text)
+
+      ### After 30 queries, branches_data is [] for all subsequent requests !!!
+
+      branch_count = '0'
+      if branches_data:
+        branch_count = str(len(branches_data))
+
+      print(','.join([existing_project['name'], license, readme, branch_count]))
 
 else:
   print('Didn\'t find any existing projects.', file=sys.stderr)
