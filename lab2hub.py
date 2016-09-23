@@ -19,9 +19,7 @@ def getLastPage(link_header):
 
 github_urls = {
   'repos': 'https://api.github.com/orgs/{}/repos', # GET
-  'create': 'https://api.github.com/orgs/{}/repos', # POST
-  'license': '/repos/{}/{}', # GET
-  'readme': '/repos/{}/{}/readme' # GET
+  'create': 'https://api.github.com/orgs/{}/repos' # POST
 }
 
 gitlab_urls = {
