@@ -3,8 +3,6 @@
 # Finds files named settings or config in folders and allows the user to
 # review all of them for revealed passwords. Outputs a list of flagged files.
 
-# TODO:
-
 from __future__ import print_function
 import glob2
 import sys
