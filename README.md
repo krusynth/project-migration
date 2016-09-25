@@ -40,3 +40,10 @@ The new file is then loaded into vim for the user to edit further.
 
 The list of new files (and any files skipped because of duplicate names) are
 output as a list.
+
+
+## Other Tools
+
+In addition to these tools, you'll probably want to use
+[BFG](https://rtyley.github.io/bfg-repo-cleaner/) to clean your git history for
+any secure credentials.
