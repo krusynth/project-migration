@@ -45,5 +45,5 @@ output as a list.
 ## Other Tools
 
 In addition to these tools, you'll probably want to use
-[BFG](https://rtyley.github.io/bfg-repo-cleaner/) to clean your git history for
+[BFG](https://rtyley.github.io/bfg-repo-cleaner/) or [Clouseau](https://github.com/cfpb/clouseau) to clean your git history for
 any secure credentials.
