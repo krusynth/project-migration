@@ -1,5 +1,5 @@
-# gitlab2github
-A collection of tools to migrate existing GitLab repos into GitHub.
+# project-migration
+A collection of tools to migrate repos, clean projects of secrets, and properly license them.
 
 
 ## lab2hub.py
