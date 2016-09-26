@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-# Finds files named settings or config in folders and allows the user to
-# review all of them for revealed passwords. Outputs a list of flagged files.
+# Looks for project directories that are missing licenses, and allows the user
+# to select one interactively.
 
 from __future__ import print_function
 import glob2
