@@ -41,6 +41,13 @@ The new file is then loaded into vim for the user to edit further.
 The list of new files (and any files skipped because of duplicate names) are
 output as a list.
 
+## licensify.py
+
+Searches a directory, or the children of a directory, for missing LICENSE files
+and adds them.  Prompts the user to pick licenses for each directory. A quick
+and easy way to bulk add licenses to repos.  You'll still need to manually
+commit them, however - just in case.
+
 
 ## Other Tools
 
