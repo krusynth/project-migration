@@ -28,11 +28,6 @@ github_urls = {
   'branches': 'https://api.github.com/repos/{}/{}/branches' # GET
 }
 
-gitlab_urls = {
-  'projects': settings.GITLAB_DOMAIN + '/api/v3/projects/all',
-  'repos': settings.GITLAB_DOMAIN + '/projects/{}/repository/tree'
-}
-
 # Get a list of all GitHub projects.
 
 gh_projects = []
@@ -49,11 +44,11 @@ last_page = getLastPage(head.headers['link'])
 
 if last_page != 0:
 
-  print('Name,License,Readme?,Branches Count')
+  print('Name,License,Readme?,Private?,Branches Count')
 
   for page in range(1, last_page + 1):
 
-    new_payload = gh_payload
+    new_payload = gh_payload.copy()
     new_payload['page'] = page
 
     headers = { 'Accept': 'application/vnd.github.drax-preview+json' }
@@ -81,19 +76,21 @@ if last_page != 0:
         readme = str(readme_data['name'])
 
       branches_headers = { 'Accept': 'application/vnd.github.loki-preview+json'}
-      branches_payload = gh_payload
+      branches_payload = gh_payload.copy()
       branches_payload['per_page'] = 100
 
-      branches_r = requests.get(github_urls['branches'].format(settings.GITHUB_ORG, existing_project['name']), gh_payload, headers=branches_headers)
+      branches_r = requests.get(github_urls['branches'].format(settings.GITHUB_ORG, existing_project['name']), branches_payload, headers=branches_headers)
       branches_data = json.loads(branches_r.text)
 
-      ### After 30 queries, branches_data is [] for all subsequent requests !!!
+      private = 'No'
+      if existing_project['private'] :
+        private = 'Yes'
 
       branch_count = '0'
       if branches_data:
         branch_count = str(len(branches_data))
 
-      print(','.join([existing_project['name'], license, readme, branch_count]))
+      print(','.join([existing_project['name'], license, readme, private, branch_count]))
 
 else:
   print('Didn\'t find any existing projects.', file=sys.stderr)
